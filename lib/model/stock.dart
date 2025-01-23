@@ -9,12 +9,14 @@ class Stock {
   List<Batch> expiratedBatches(List<Batch> batchesToCheck) {
     List<Batch> batchesExpirated = [];
     for (Batch batchElement in batchesToCheck) {
-      if (DateTime.now()
-          .add(Duration(days: 5))
-          .isAfter(batchElement.expirationDate)) {
-        batchElement.status = BatchStatus.expiresSoon;
-      } else if (DateTime.now().isBefore(batchElement.expirationDate)) {
+      if (batchElement.expirationDate.isBefore(DateTime.now())) {
         batchElement.status = BatchStatus.expired;
+      } else if (DateTime.now()
+              .difference(batchElement.expirationDate)
+              .inDays
+              .abs() <=
+          5) {
+        batchElement.status = BatchStatus.expiresSoon;
       } else {
         batchElement.status = BatchStatus.notExpired;
       }
