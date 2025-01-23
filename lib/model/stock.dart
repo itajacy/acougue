@@ -12,9 +12,23 @@ class Stock {
       if (DateTime.now()
           .add(Duration(days: 5))
           .isAfter(batchElement.expirationDate)) {
-        batchesExpirated.add(batchElement);
+        batchElement.status = BatchStatus.expiresSoon;
+      } else if (DateTime.now().isBefore(batchElement.expirationDate)) {
+        batchElement.status = BatchStatus.expired;
+      } else {
+        batchElement.status = BatchStatus.notExpired;
       }
+      batchesExpirated.add(batchElement);
     }
+    batchesExpirated.sort(
+      (a, b) => a.expirationDate.compareTo(b.expirationDate),
+    );
     return batchesExpirated;
   }
+}
+
+enum BatchStatus {
+  expired,
+  expiresSoon,
+  notExpired,
 }
