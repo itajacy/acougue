@@ -58,6 +58,11 @@ class MyButcherHome extends StatelessWidget {
       expirationDate: DateTime(2025, 01, 30),
       storageLocation: 'F01E04P02',
     ),
+    Batch(
+      batchId: 'BRF0878W11',
+      expirationDate: DateTime(2025, 01, 08),
+      storageLocation: 'F03E02P01',
+    ),
   ];
 
   @override
@@ -67,15 +72,11 @@ class MyButcherHome extends StatelessWidget {
     var testeStock = stock.expiratedBatches(testBatches);
     for (var element in testeStock) {
       print(element.batchId);
-      print(element.expirationDate);
+      print(getFormattedDate(element.expirationDate));
       print(element.status);
     }
 
     //! fim do teste
-    final DateTime now = DateTime.now();
-    final DateFormat formatter = DateFormat('dd/MM/yyyy');
-    final String formattedDate = formatter.format(now);
-    print('Hoje é $formattedDate'); // something like 2021-06-19
 
     return Scaffold(
       appBar: AppBar(
@@ -87,7 +88,7 @@ class MyButcherHome extends StatelessWidget {
               child: const Text(
                 'Açougue JacoBeef',
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 20,
                   fontStyle: FontStyle.italic,
                   color: Colors.white,
                 ),
@@ -96,7 +97,7 @@ class MyButcherHome extends StatelessWidget {
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
-                "Hoje:  $formattedDate",
+                "Hoje:  ${getFormattedDate(DateTime.now())}",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -115,33 +116,42 @@ class MyButcherHome extends StatelessWidget {
             leading: switch (batch.status) {
               BatchStatus.expired => const Icon(
                   Icons.error,
-                  color: Colors.red,
+                  color: Colors.black,
+                  size: 30,
                 ),
               BatchStatus.expiresSoon => const Icon(
-                  Icons.warning,
-                  color: Colors.yellow,
+                  // Icons.crisis_alert,
+                  Icons.warning_rounded,
+                  color: Color.fromARGB(255, 181, 8, 8),
+                  size: 30,
                 ),
               BatchStatus.notExpired => const Icon(
                   Icons.check_box,
                   color: Colors.green,
+                  size: 30,
                 ),
               // TODO: Handle this case.
               Enum() => throw UnimplementedError(),
               // TODO: Handle this case.
               null => throw UnimplementedError(),
             },
+            tileColor: Colors.grey[200],
             title: Text('Lote: ${batch.batchId}'),
             subtitle: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('${batch.expirationDate}'),
-                Text(batch.batchId),
-                Text(batch.storageLocation),
+                Text("val.: ${getFormattedDate(batch.expirationDate)}"),
+                // Text(batch.batchId),
+                Text("local: ${batch.storageLocation}"),
               ],
             ),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                testeStock.removeAt(index);
+              },
               icon: Icon(Icons.delete_forever),
+              color: const Color.fromARGB(255, 5, 30, 141),
+              iconSize: 30,
             ),
           );
         },
@@ -153,5 +163,10 @@ class MyButcherHome extends StatelessWidget {
         hoverElevation: 120.0,
       ),
     );
+  }
+
+  String getFormattedDate(DateTime date) {
+    final DateFormat formatter = DateFormat('dd/MM/yyyy');
+    return formatter.format(date);
   }
 }
