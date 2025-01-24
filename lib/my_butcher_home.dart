@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 import 'model/batch.dart';
 import 'package:intl/intl.dart';
 
-class MyButcherHome extends StatelessWidget {
+class MyButcherHome extends StatefulWidget {
   MyButcherHome({super.key});
 
+  @override
+  State<MyButcherHome> createState() => _MyButcherHomeState();
+}
+
+class _MyButcherHomeState extends State<MyButcherHome> {
   List<Batch> testBatches = [
     Batch(
       batchId: 'FRI2501B21',
@@ -65,18 +70,12 @@ class MyButcherHome extends StatelessWidget {
     ),
   ];
 
+  int x = 0;
+
   @override
   Widget build(BuildContext context) {
     Stock stock = Stock();
-    //! inicio do teste
-    var testeStock = stock.expiratedBatches(testBatches);
-    for (var element in testeStock) {
-      print(element.batchId);
-      print(getFormattedDate(element.expirationDate));
-      print(element.status);
-    }
-
-    //! fim do teste
+    List<Batch> testeStock = stock.expiratedBatches(testBatches);
 
     return Scaffold(
       appBar: AppBar(
@@ -147,7 +146,10 @@ class MyButcherHome extends StatelessWidget {
             ),
             trailing: IconButton(
               onPressed: () {
-                testeStock.removeAt(index);
+                testBatches.removeAt(index);
+                setState(() {
+                  testBatches;
+                });
               },
               icon: Icon(Icons.delete_forever),
               color: const Color.fromARGB(255, 5, 30, 141),
