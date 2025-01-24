@@ -135,7 +135,11 @@ class _MyButcherHomeState extends State<MyButcherHome> {
               null => throw UnimplementedError(),
             },
             tileColor: Colors.grey[200],
-            title: Text('Lote: ${batch.batchId}'),
+            title: Text(
+              'Lote: ${batch.batchId}',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            shape: Border.all(color: Colors.white, width: 4),
             subtitle: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -152,17 +156,28 @@ class _MyButcherHomeState extends State<MyButcherHome> {
                 });
               },
               icon: Icon(Icons.delete_forever),
-              color: const Color.fromARGB(255, 5, 30, 141),
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll<Color>(Colors.black87),
+                foregroundColor: WidgetStatePropertyAll<Color>(Colors.white),
+                shadowColor: WidgetStatePropertyAll<Color>(Colors.black),
+                elevation: WidgetStatePropertyAll<double>(6),
+              ),
               iconSize: 30,
+              highlightColor: const Color.fromARGB(255, 173, 99, 30),
             ),
           );
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
-        label: Text('Adicionar Lote'),
+        label: Text(
+          'Adicionar Lote',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         tooltip: 'Cadastrar um novo Lote',
         hoverElevation: 120.0,
+        backgroundColor: const Color.fromARGB(255, 73, 10, 190),
+        foregroundColor: Colors.white,
       ),
     );
   }
