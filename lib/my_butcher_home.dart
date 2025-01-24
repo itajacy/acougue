@@ -70,8 +70,6 @@ class _MyButcherHomeState extends State<MyButcherHome> {
     ),
   ];
 
-  int x = 0;
-
   @override
   Widget build(BuildContext context) {
     Stock stock = Stock();
@@ -134,7 +132,9 @@ class _MyButcherHomeState extends State<MyButcherHome> {
               // TODO: Handle this case.
               null => throw UnimplementedError(),
             },
-            tileColor: Colors.grey[200],
+            tileColor: (batch.status == BatchStatus.expiresSoon)
+                ? Colors.red[200]
+                : Colors.grey[300],
             title: Text(
               'Lote: ${batch.batchId}',
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -169,7 +169,22 @@ class _MyButcherHomeState extends State<MyButcherHome> {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context)
+              .pushNamed(
+            '/register',
+            arguments: List.from(testeStock),
+          )
+              .then(
+            (value) {
+              if (value != null) {
+                setState(() {
+                  testBatches = value as List<Batch>;
+                });
+              }
+            },
+          );
+        },
         label: Text(
           'Adicionar Lote',
           style: TextStyle(fontWeight: FontWeight.bold),
