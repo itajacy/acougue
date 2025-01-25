@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'model/batch.dart';
 import 'upper_case_text_formatter.dart';
@@ -119,20 +120,26 @@ class _BatchRegisterState extends State<BatchRegister> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          if (_formKey.currentState!.validate()) {
+          DateFormat format = DateFormat('dd/MM/yyyy');
+
+          if (batchIdController.text.isNotEmpty &&
+              expirationDateController.text.isNotEmpty &&
+              storageLocationController.text.isNotEmpty) {
             final newBatch = Batch(
               batchId: batchIdController.text,
-              expirationDate: DateTime.parse(expirationDateController.text),
+              expirationDate: format.parse(expirationDateController.text),
               storageLocation: storageLocationController.text,
             );
-            setState(() {
-              newBatches.add(newBatch);
-            });
-            Navigator.of(context).pop(newBatches);
+
+            widget.batches.add(newBatch);
           }
 
-          //todo  talvez aqui precise de um setState
+          Navigator.of(context)
+              .pop(widget.batches); // Retorna a lista atualizada
         },
+
+        //todo  talvez aqui precise de um setState
+
         label: Text(
           'Cadastrar',
           style: TextStyle(fontWeight: FontWeight.bold),
