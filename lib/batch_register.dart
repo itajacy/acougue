@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'model/batch.dart';
-import 'upper_case_text_formatter.dart';
+// import 'upper_case_text_formatter.dart';
 
 class BatchRegister extends StatefulWidget {
   List<Batch> batches;
@@ -18,7 +18,7 @@ class BatchRegister extends StatefulWidget {
 class _BatchRegisterState extends State<BatchRegister> {
   final _formKey = GlobalKey<FormState>();
 
-  List<Batch> newBatches = [];
+  // List<Batch> newBatches = [];
 
   TextEditingController batchIdController = TextEditingController();
 
@@ -61,7 +61,6 @@ class _BatchRegisterState extends State<BatchRegister> {
       body: Form(
         key: _formKey,
         child: Container(
-          // padding: EdgeInsets.all(16.0),
           color: Colors.grey[200],
           child: Column(
             children: [
@@ -72,8 +71,7 @@ class _BatchRegisterState extends State<BatchRegister> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   controller: batchIdController,
-                  inputFormatters: [UpperCaseTextFormatter()],
-                  // onChanged: (value) => value.toUpperCase(),
+                  // inputFormatters: [UpperCaseTextFormatter()],
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     contentPadding: EdgeInsets.all(16.0),
@@ -152,15 +150,3 @@ class _BatchRegisterState extends State<BatchRegister> {
     );
   }
 }
-
-
-// class UpperCaseTextFormatter extends TextInputFormatter {
-//   @override
-//   TextEditingValue formatEditUpdate(
-//       TextEditingValue oldValue, TextEditingValue newValue) {
-//     return newValue.copyWith(
-//       text: newValue.text.toUpperCase(),
-//       selection: newValue.selection,
-//     );
-//   }
-// }

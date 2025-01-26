@@ -49,7 +49,7 @@ class _MyButcherHomeState extends State<MyButcherHome> {
   Stock stock = Stock();
   @override
   Widget build(BuildContext context) {
-    List<Batch> testeStock = stock.expiratedBatches(testBatches);
+    List<Batch> stockList = stock.expiratedBatches(testBatches);
 
     return Scaffold(
       appBar: AppBar(
@@ -82,9 +82,9 @@ class _MyButcherHomeState extends State<MyButcherHome> {
         ),
       ),
       body: ListView.builder(
-        itemCount: testeStock.length,
+        itemCount: stockList.length,
         itemBuilder: (context, index) {
-          final batch = testeStock[index];
+          final batch = stockList[index];
           return ListTile(
             leading: switch (batch.status) {
               BatchStatus.expired => const Icon(
@@ -119,21 +119,18 @@ class _MyButcherHomeState extends State<MyButcherHome> {
             subtitle: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("val.: ${getFormattedDate(batch.expirationDate)}"),
+                Text(batch.status == BatchStatus.expired
+                    ? "VENCIDO"
+                    : "val.: ${getFormattedDate(batch.expirationDate)}"),
                 // Text(batch.batchId),
                 Text("local: ${batch.storageLocation}"),
               ],
             ),
             trailing: IconButton(
               onPressed: () {
-                print('index a ser removido: $index');
-                print('elementos antes da remoção: ${testBatches.length}');
-                testBatches.removeAt(index);
-                print('elementos depois da remoção: ${testBatches.length}');
+                stockList.removeAt(index);
                 setState(() {
-                  testBatches;
-                  testeStock = stock.expiratedBatches(testBatches);
-                  testBatches = testeStock;
+                  testBatches = stockList;
                 });
               },
               icon: Icon(Icons.delete_forever),
@@ -151,21 +148,15 @@ class _MyButcherHomeState extends State<MyButcherHome> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          print('ao clicar no float, batches = ${testBatches.length}');
           // Aguarda o retorno da BatchRegister
           final updatedBatches = await Navigator.of(context).push<List<Batch>>(
             MaterialPageRoute(
               builder: (context) => BatchRegister(batches: testBatches),
             ),
           );
-          print(updatedBatches != null
-              ? 'Lote Cadastrado'
-              : 'Nenhum Lote Cadastrado');
+         
           if (updatedBatches != null) {
             setState(() {
-              print('setState');
-              print('batches = ${testBatches.length}');
-              print('updateBatches = ${updatedBatches.length}');
               testBatches = updatedBatches;
             });
           }
